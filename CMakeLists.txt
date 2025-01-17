@@ -10,7 +10,8 @@ project ("CPPong")
 
 find_package(SDL2 REQUIRED)
 
-add_executable (CPPong "src/EntryPoint.cpp" )
+add_executable (CPPong "src/EntryPoint.cpp" "include/GameConfig.h")
+target_include_directories(CPPong PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 target_link_libraries(CPPong PRIVATE SDL2::SDL2 SDL2::SDL2main)
 
