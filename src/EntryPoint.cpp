@@ -3,16 +3,13 @@
 
 #include <GameConfig.h>
 #include <Paddle.h>
+#include <Timer.h>
 #include <SDL.h>
 
 // The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 // The renderer
 SDL_Renderer* gRenderer = NULL;
-
-Uint64 NOW = SDL_GetPerformanceCounter();
-Uint64 LAST = 0;
-double deltaTime = 0;
 
 bool Init()
 {
@@ -36,7 +33,7 @@ bool Init()
 		else
 		{
 			// Create Renderer
-			gRenderer = SDL_CreateRenderer(gWindow, -1, 0);
+			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
 
 			if (gRenderer == NULL)
 			{
@@ -78,13 +75,17 @@ int main(int argc, char* argv[])
 	Paddle leftPaddle = Paddle(PaddleType::Left);
 	Paddle rightPaddle = Paddle(PaddleType::Right);
 
+	Timer fpsTimer = Timer();
+	Timer capTimer = Timer();
+	
+	//Start counting frames per second
+	int countedFrames = 0;
+	fpsTimer.Start();
+
 	while (!quit)
 	{
-		LAST = NOW;
-		NOW = SDL_GetPerformanceCounter();
+		capTimer.Start();
 
-		deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
-		
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_QUIT)
@@ -95,7 +96,7 @@ int main(int argc, char* argv[])
 			leftPaddle.HandleEvent(e);
 			rightPaddle.HandleEvent(e);
 		}
-
+		
 		rightPaddle.Move();
 		leftPaddle.Move();
 				
@@ -107,6 +108,24 @@ int main(int argc, char* argv[])
 		rightPaddle.Render(gRenderer);
 
 		SDL_RenderPresent(gRenderer);
+		
+		//Calculate and correct fps
+		float avgFPS = countedFrames / (fpsTimer.GetTicks() / 1000.f);
+		if (avgFPS > 2000000)
+		{
+			avgFPS = 0;
+		}
+		system("cls");
+		cout << "Average FPS : " << avgFPS << endl;
+
+		++countedFrames;
+
+		int frameTicks = capTimer.GetTicks();
+		if (frameTicks < SCREEN_TICKS_PER_FRAME)
+		{
+			//Wait remaining time
+			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
+		}
 	}
 
 	Close();

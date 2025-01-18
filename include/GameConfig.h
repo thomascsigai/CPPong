@@ -7,8 +7,11 @@ using namespace std;
 
 // WINDOW SETTINGS -------------------------------------------------
 
-constexpr uint16_t SCREEN_WIDTH = 800;
-constexpr uint16_t SCREEN_HEIGHT = 600;
+constexpr Uint16 SCREEN_WIDTH = 800;
+constexpr Uint16 SCREEN_HEIGHT = 600;
+
+const int SCREEN_FPS = 60;
+const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 
 // KEYBINDS ---------------------------------------------------------
