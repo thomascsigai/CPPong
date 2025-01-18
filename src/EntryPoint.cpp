@@ -1,52 +1,66 @@
 // Defines application entry point.
 //
 
-#include <iostream>
+#include <GameConfig.h>
+#include <Paddle.h>
 #include <SDL.h>
-
-const std::uint16_t SCREEN_WIDTH = 800;
-const std::uint16_t SCREEN_HEIGHT = 600;
 
 // The window we'll be rendering to
 SDL_Window* gWindow = NULL;
-// The surface contained by the window
-SDL_Surface* gScreenSurface = NULL;
+// The renderer
+SDL_Renderer* gRenderer = NULL;
 
-bool init()
+Uint64 NOW = SDL_GetPerformanceCounter();
+Uint64 LAST = 0;
+double deltaTime = 0;
+
+bool Init()
 {
 	bool success = true;
 
 	// SDL Initialization
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		std::cerr << "SDL could not initialize ! SDL_Error: " << SDL_GetError() << std::endl;
+		cerr << "SDL could not initialize ! SDL_Error: " << SDL_GetError() << endl;
 	}
 	else
 	{
-		//Create Window
+		// Create Window
 		gWindow = SDL_CreateWindow("GameDev QuickStart", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 		if (gWindow == NULL)
 		{
-			std::cerr << "Window could not be created ! SDL_Error: " << SDL_GetError() << std::endl;
+			cerr << "Window could not be created ! SDL_Error: " << SDL_GetError() << endl;
 			success = false;
 		}
 		else
 		{
-			// Get window surface
-			gScreenSurface = SDL_GetWindowSurface(gWindow);
+			// Create Renderer
+			gRenderer = SDL_CreateRenderer(gWindow, -1, 0);
+
+			if (gRenderer == NULL)
+			{
+				cerr << "Renderer could not be created ! SDL_Error: " << SDL_GetError() << endl;
+				success = false;
+			}
 		}
 	}
 
 	return success;
 }
 
-void close()
+void ProcessEvents(SDL_Event& e, bool& quit)
 {
-	// Deallocate surface
-	SDL_FreeSurface(gScreenSurface);
+	
+}
 
-	//Destroy Window
+void Close()
+{
+	// Destroy Renderer
+	SDL_DestroyRenderer(gRenderer);
+	gRenderer = NULL;
+
+	// Destroy Window
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
 
@@ -59,45 +73,43 @@ int main(int argc, char* argv[])
 
 	SDL_Event e;
 
-	init();
+	Init();
+
+	Paddle leftPaddle = Paddle(PaddleType::Left);
+	Paddle rightPaddle = Paddle(PaddleType::Right);
 
 	while (!quit)
 	{
+		LAST = NOW;
+		NOW = SDL_GetPerformanceCounter();
+
+		deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
+		
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
 			}
-			else if (e.type == SDL_KEYDOWN)
-			{
-				switch (e.key.keysym.sym)
-				{
-					case SDLK_UP:
-					std::cout << "UP pressed" << std::endl;
-					break;
-					
-					case SDLK_DOWN:
-					std::cout << "DOWN pressed" << std::endl;
-					break;
-					
-					case SDLK_RIGHT:
-					std::cout << "RIGHT pressed" << std::endl;
-					break;
-					
-					case SDLK_LEFT:
-					std::cout << "LEFT pressed" << std::endl;
-					break;
 
-					default:
-					std::cout << "A key is pressed" << std::endl;
-					break;
-				}
-			}
+			leftPaddle.HandleEvent(e);
+			rightPaddle.HandleEvent(e);
 		}
+
+		rightPaddle.Move();
+		leftPaddle.Move();
+				
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+		SDL_RenderClear(gRenderer);
+		SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
+
+		leftPaddle.Render(gRenderer);
+		rightPaddle.Render(gRenderer);
+
+		SDL_RenderPresent(gRenderer);
 	}
 
-	close();
+	Close();
 
 	return 0;
 }
