@@ -33,7 +33,7 @@ bool Init()
 		else
 		{
 			// Create Renderer
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 			if (gRenderer == NULL)
 			{
@@ -76,7 +76,6 @@ int main(int argc, char* argv[])
 	Paddle rightPaddle = Paddle(PaddleType::Right);
 
 	Timer fpsTimer = Timer();
-	Timer capTimer = Timer();
 	
 	//Start counting frames per second
 	int countedFrames = 0;
@@ -84,8 +83,6 @@ int main(int argc, char* argv[])
 
 	while (!quit)
 	{
-		capTimer.Start();
-
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_QUIT)
@@ -115,17 +112,9 @@ int main(int argc, char* argv[])
 		{
 			avgFPS = 0;
 		}
-		system("cls");
 		cout << "Average FPS : " << avgFPS << endl;
 
 		++countedFrames;
-
-		int frameTicks = capTimer.GetTicks();
-		if (frameTicks < SCREEN_TICKS_PER_FRAME)
-		{
-			//Wait remaining time
-			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
-		}
 	}
 
 	Close();
