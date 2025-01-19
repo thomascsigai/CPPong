@@ -28,13 +28,19 @@ void Ball::Move()
 	// Checks for screen left and right collision (point scored)
 	if (posX >= SCREEN_WIDTH - BALL_SIZE || posX <= BALL_SIZE)
 	{
-		velX *= -1;
+		posX = SCREEN_WIDTH / 2 - BALL_SIZE / 2;
+		posY = SCREEN_HEIGHT / 2 - BALL_SIZE / 2;
 	}
 	
 	posX += velX;
 	posY += velY;
 
 	collider = { posX, posY, BALL_SIZE, BALL_SIZE };
+}
+
+void Ball::OnCollide()
+{
+	velX *= -1;
 }
 
 SDL_Rect Ball::GetCollider()

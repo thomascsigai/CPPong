@@ -12,6 +12,8 @@ public:
 
 	void Render(SDL_Renderer* renderer);
 
+	void OnCollide();
+
 	SDL_Rect GetCollider();
 
 private:

@@ -47,11 +47,6 @@ bool Init()
 	return success;
 }
 
-void ProcessEvents(SDL_Event& e, bool& quit)
-{
-	
-}
-
 void Close()
 {
 	// Destroy Renderer
@@ -153,8 +148,8 @@ int main(int argc, char* argv[])
 
 		ball.Move();
 
-		if (CheckCollision(ball.GetCollider(), leftPaddle.GetCollider())) cout << "Left Collide" << endl;
-		if (CheckCollision(ball.GetCollider(), rightPaddle.GetCollider())) cout << "Right Collide" << endl;
+		if (CheckCollision(ball.GetCollider(), leftPaddle.GetCollider())) ball.OnCollide();
+		if (CheckCollision(ball.GetCollider(), rightPaddle.GetCollider())) ball.OnCollide();
 				
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(gRenderer);

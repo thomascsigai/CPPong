@@ -19,7 +19,7 @@ constexpr Uint16 SPACE_BETWEEN_DIVIDERS = 10;
 
 // Ball Settings
 constexpr Uint16 BALL_SIZE = 5;
-constexpr Uint16 BALL_SPEED = 5;
+constexpr Uint16 BALL_SPEED = 3;
 
 // Paddle Settings
 static const int PADDLE_WIDTH = 5;
