@@ -3,6 +3,7 @@
 
 #include <GameConfig.h>
 #include <Paddle.h>
+#include <Ball.h>
 #include <Timer.h>
 #include <SDL.h>
 
@@ -64,6 +65,21 @@ void Close()
 	SDL_Quit();
 }
 
+// Draws the divider line in the middle of the screen
+void DrawDividers()
+{
+	const int NUMBER_OF_DIVIDERS = SCREEN_HEIGHT / (DIVIDER_HEIGHT + SPACE_BETWEEN_DIVIDERS);
+
+	for (int i = 0; i < NUMBER_OF_DIVIDERS; i++)
+	{
+		int newPosX = SCREEN_WIDTH / 2 - DIVIDER_WIDTH / 2;
+		int newPosY = i * (DIVIDER_HEIGHT + SPACE_BETWEEN_DIVIDERS);
+		
+		SDL_Rect newDiv = { newPosX, newPosY, DIVIDER_WIDTH, DIVIDER_HEIGHT };
+		SDL_RenderFillRect(gRenderer, &newDiv);
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	bool quit = false;
@@ -74,6 +90,8 @@ int main(int argc, char* argv[])
 
 	Paddle leftPaddle = Paddle(PaddleType::Left);
 	Paddle rightPaddle = Paddle(PaddleType::Right);
+
+	Ball ball = Ball();
 
 	Timer fpsTimer = Timer();
 	
@@ -96,23 +114,29 @@ int main(int argc, char* argv[])
 		
 		rightPaddle.Move();
 		leftPaddle.Move();
+
+		ball.Move();
 				
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(gRenderer);
 		SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 
+		DrawDividers();
+
 		leftPaddle.Render(gRenderer);
 		rightPaddle.Render(gRenderer);
+
+		ball.Render(gRenderer);
 
 		SDL_RenderPresent(gRenderer);
 		
 		//Calculate and correct fps
-		float avgFPS = countedFrames / (fpsTimer.GetTicks() / 1000.f);
+		/*float avgFPS = countedFrames / (fpsTimer.GetTicks() / 1000.f);
 		if (avgFPS > 2000000)
 		{
 			avgFPS = 0;
 		}
-		cout << "Average FPS : " << avgFPS << endl;
+		cout << "Average FPS : " << avgFPS << endl;*/
 
 		++countedFrames;
 	}

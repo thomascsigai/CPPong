@@ -5,14 +5,17 @@
 
 using namespace std;
 
-// WINDOW SETTINGS -------------------------------------------------
+// WINDOW SETTINGS --------------------------------------------------
 
 constexpr Uint16 SCREEN_WIDTH = 800;
 constexpr Uint16 SCREEN_HEIGHT = 600;
 
-const int SCREEN_FPS = 60;
-const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
+// GAME SPECIFIC SETTINGS -------------------------------------------
 
+// Divider in the middle of the screen
+constexpr Uint16 DIVIDER_WIDTH = 2;
+constexpr Uint16 DIVIDER_HEIGHT = 15;
+constexpr Uint16 SPACE_BETWEEN_DIVIDERS = 10;
 
 // KEYBINDS ---------------------------------------------------------
 
