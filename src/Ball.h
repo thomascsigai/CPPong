@@ -12,7 +12,11 @@ public:
 
 	void Render(SDL_Renderer* renderer);
 
+	SDL_Rect GetCollider();
+
 private:
 	int posX, posY;
 	int velX, velY;
+
+	SDL_Rect collider;
 };

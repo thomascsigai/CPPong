@@ -20,10 +20,14 @@ public:
 
 	void Render(SDL_Renderer* renderer);
 
+	SDL_Rect GetCollider();
+
 private:
 	PaddleType type;
 	PaddleKeybind keybind;
 
 	int posX, posY;
 	int velY;
+
+	SDL_Rect collider;
 };

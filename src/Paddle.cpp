@@ -7,6 +7,8 @@ Paddle::Paddle(PaddleType _type) : type(_type)
 
 	velY = 0;
 
+	collider = { posX, posY, PADDLE_WIDTH, PADDLE_HEIGHT };
+
 	keybind = (type == PaddleType::Left) ? LEFT_PADDLE_KEYBIND : RIGHT_PADDLE_KEYBIND;
 }
 
@@ -32,10 +34,17 @@ void Paddle::Move()
 	{
 		posY -= velY;
 	}
+
+	collider = { posX, posY, PADDLE_WIDTH, PADDLE_HEIGHT };
 }
 
 void Paddle::Render(SDL_Renderer* renderer)
 {
 	SDL_Rect paddleRect = { posX, posY, PADDLE_WIDTH, PADDLE_HEIGHT };
 	SDL_RenderFillRect(renderer, &paddleRect);
+}
+
+SDL_Rect Paddle::GetCollider()
+{
+	return collider;
 }

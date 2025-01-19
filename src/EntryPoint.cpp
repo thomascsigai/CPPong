@@ -80,6 +80,42 @@ void DrawDividers()
 	}
 }
 
+bool CheckCollision(SDL_Rect a, SDL_Rect b)
+{
+	int leftA, rightA, topA, bottomA;
+	int leftB, rightB, topB, bottomB;
+
+	leftA = a.x;	rightA  = a.x + a.w;
+	topA  = a.y;	bottomA = a.y + a.h;
+
+	leftB = b.x;	rightB  = b.x + b.w;
+	topB  = b.y;	bottomB = b.y + b.h;
+
+	//If any of the sides from A are outside of B
+	if (bottomA <= topB)
+	{
+		return false;
+	}
+
+	if (topA >= bottomB)
+	{
+		return false;
+	}
+
+	if (rightA <= leftB)
+	{
+		return false;
+	}
+
+	if (leftA >= rightB)
+	{
+		return false;
+	}
+
+	//If none of the sides from A are outside B
+	return true;
+}
+
 int main(int argc, char* argv[])
 {
 	bool quit = false;
@@ -116,6 +152,9 @@ int main(int argc, char* argv[])
 		leftPaddle.Move();
 
 		ball.Move();
+
+		if (CheckCollision(ball.GetCollider(), leftPaddle.GetCollider())) cout << "Left Collide" << endl;
+		if (CheckCollision(ball.GetCollider(), rightPaddle.GetCollider())) cout << "Right Collide" << endl;
 				
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(gRenderer);

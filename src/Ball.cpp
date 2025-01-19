@@ -7,6 +7,8 @@ Ball::Ball()
 
 	velX = BALL_SPEED;
 	velY = BALL_SPEED;
+
+	collider = { posX, posY, BALL_SIZE, BALL_SIZE };
 }
 
 void Ball::Render(SDL_Renderer* renderer)
@@ -31,4 +33,11 @@ void Ball::Move()
 	
 	posX += velX;
 	posY += velY;
+
+	collider = { posX, posY, BALL_SIZE, BALL_SIZE };
+}
+
+SDL_Rect Ball::GetCollider()
+{
+	return collider;
 }
