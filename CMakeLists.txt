@@ -10,7 +10,8 @@ project ("CPPong")
 
 find_package(SDL2 REQUIRED)
 
-add_executable (CPPong "src/EntryPoint.cpp" )
+add_executable (CPPong "src/EntryPoint.cpp" "src/Paddle.cpp" "include/utils/Timer.cpp" "src/Ball.cpp")
+target_include_directories(CPPong PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/include/utils")
 
 target_link_libraries(CPPong PRIVATE SDL2::SDL2 SDL2::SDL2main)
 
