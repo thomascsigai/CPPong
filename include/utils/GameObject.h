@@ -51,9 +51,14 @@ public:
 		transform.UpdateCollider();
 	}
 
-	virtual void OnCollide(GameObject other)
+	virtual void OnCollide(GameObject& other)
 	{
 		cout << name << "Collided with " << other.name << "." << endl;
+	}
+
+	virtual void HandleEvent(SDL_Event& e)
+	{
+		cerr << "HandleEvent method used but not implemented for GameObject " << name << "." << endl;
 	}
 
 

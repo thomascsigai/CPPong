@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GameConfig.h>
+#include <GameObject.h>
 #include <SDL.h>
 
 enum PaddleType
@@ -9,25 +10,18 @@ enum PaddleType
 	Right
 };
 
-class Paddle
+class Paddle : public GameObject
 {
 public:
 	Paddle(PaddleType _type);
 
-	void HandleEvent(SDL_Event& e);
+	void HandleEvent(SDL_Event& e) override;
 
-	void Move();
+	void Move() override;
 
-	void Render(SDL_Renderer* renderer);
-
-	SDL_Rect GetCollider();
+	void Render(SDL_Renderer* renderer) override;
 
 private:
 	PaddleType type;
 	PaddleKeybind keybind;
-
-	int posX, posY;
-	int velY;
-
-	SDL_Rect collider;
 };

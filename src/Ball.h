@@ -2,6 +2,7 @@
 
 #include <GameConfig.h>
 #include <GameObject.h>
+#include <Timer.h>
 #include <SDL.h>
 
 class Ball : public GameObject
@@ -13,10 +14,5 @@ public:
 
 	void Render(SDL_Renderer* renderer) override;
 
-	void OnCollide(GameObject other) override;
-
-	void OnCollide()
-	{
-		velX *= -1;
-	}
+	void OnCollide(GameObject& other) override;
 };

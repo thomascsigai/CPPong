@@ -2,12 +2,11 @@
 
 Paddle::Paddle(PaddleType _type) : type(_type)
 {
-	posX = (type == PaddleType::Left) ? 50 : SCREEN_WIDTH - 50;
-	posY = SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2;
+	int x = (type == PaddleType::Left) ? 50 : SCREEN_WIDTH - 50;
+	int y = SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2;
 
-	velY = 0;
-
-	collider = { posX, posY, PADDLE_WIDTH, PADDLE_HEIGHT };
+	transform.SetPosition(x, y);
+	transform.SetSize(PADDLE_WIDTH, PADDLE_HEIGHT);
 
 	keybind = (type == PaddleType::Left) ? LEFT_PADDLE_KEYBIND : RIGHT_PADDLE_KEYBIND;
 }
@@ -28,23 +27,24 @@ void Paddle::HandleEvent(SDL_Event& e)
 
 void Paddle::Move()
 {
-	posY += velY;
+	transform.y += velY;
 
-	if (posY <= 0 || posY >= SCREEN_HEIGHT - PADDLE_HEIGHT)
+	if (transform.y <= 0 || transform.y >= SCREEN_HEIGHT - PADDLE_HEIGHT)
 	{
-		posY -= velY;
+		transform.y -= velY;
 	}
 
-	collider = { posX, posY, PADDLE_WIDTH, PADDLE_HEIGHT };
+	transform.UpdateCollider();
 }
 
 void Paddle::Render(SDL_Renderer* renderer)
 {
-	SDL_Rect paddleRect = { posX, posY, PADDLE_WIDTH, PADDLE_HEIGHT };
+	SDL_Rect paddleRect = { transform.x, transform.y, transform.w, transform.h };
 	SDL_RenderFillRect(renderer, &paddleRect);
-}
 
-SDL_Rect Paddle::GetCollider()
-{
-	return collider;
+	//Debug draw collider
+
+	/*SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+	SDL_RenderDrawRect(renderer, &transform.collider);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);*/
 }

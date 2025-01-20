@@ -6,6 +6,7 @@
 #include <Ball.h>
 #include <Timer.h>
 #include <SDL.h>
+#include <cassert>
 
 // The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -87,25 +88,10 @@ bool CheckCollision(SDL_Rect a, SDL_Rect b)
 	topB  = b.y;	bottomB = b.y + b.h;
 
 	//If any of the sides from A are outside of B
-	if (bottomA <= topB)
-	{
-		return false;
-	}
-
-	if (topA >= bottomB)
-	{
-		return false;
-	}
-
-	if (rightA <= leftB)
-	{
-		return false;
-	}
-
-	if (leftA >= rightB)
-	{
-		return false;
-	}
+	if (bottomA <= topB) return false;
+	if (topA >= bottomB) return false;
+	if (rightA <= leftB) return false;
+	if (leftA >= rightB) return false;
 
 	//If none of the sides from A are outside B
 	return true;
@@ -148,8 +134,8 @@ int main(int argc, char* argv[])
 
 		ball.Move();
 
-		if (CheckCollision(ball.GetCollider(), leftPaddle.GetCollider())) ball.OnCollide();
-		if (CheckCollision(ball.GetCollider(), rightPaddle.GetCollider())) ball.OnCollide();
+		if (CheckCollision(ball.GetCollider(), leftPaddle.GetCollider())) ball.OnCollide(leftPaddle);
+		if (CheckCollision(ball.GetCollider(), rightPaddle.GetCollider())) ball.OnCollide(rightPaddle);
 				
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(gRenderer);
