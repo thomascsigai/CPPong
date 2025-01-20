@@ -1,24 +1,22 @@
 #pragma once
 
 #include <GameConfig.h>
+#include <GameObject.h>
 #include <SDL.h>
 
-class Ball
+class Ball : public GameObject
 {
 public:
 	Ball();
 
-	void Move();
+	void Move() override;
 
-	void Render(SDL_Renderer* renderer);
+	void Render(SDL_Renderer* renderer) override;
 
-	void OnCollide();
+	void OnCollide(GameObject other) override;
 
-	SDL_Rect GetCollider();
-
-private:
-	int posX, posY;
-	int velX, velY;
-
-	SDL_Rect collider;
+	void OnCollide()
+	{
+		velX *= -1;
+	}
 };
