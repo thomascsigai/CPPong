@@ -43,11 +43,11 @@ public:
 		SDL_FRect rect = { transform.x, transform.y, transform.w, transform.h };
 		SDL_RenderFillRectF(renderer, &rect);
 
+		
 		//Debug draw collider
-
-		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+		/*SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 		SDL_RenderDrawRectF(renderer, &transform.collider);
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);*/
 	}
 
 	virtual void Move(double deltaTime)
