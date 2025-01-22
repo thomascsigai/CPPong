@@ -6,12 +6,14 @@
 #include <Ball.h>
 #include <Timer.h>
 #include <SDL.h>
-#include <cassert>
+#include <SDL_ttf.h>
 
 // The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 // The renderer
 SDL_Renderer* gRenderer = NULL;
+// Font used in game
+TTF_Font* gFont = NULL;
 
 bool Init()
 {
@@ -42,6 +44,22 @@ bool Init()
 				cerr << "Renderer could not be created ! SDL_Error: " << SDL_GetError() << endl;
 				success = false;
 			}
+
+			if (TTF_Init() < 0)
+			{
+				cerr << "SDL_ttf could not initialize : " << TTF_GetError() << endl;
+				success = false;
+			}
+			else
+			{
+				gFont = TTF_OpenFont(ARIAL_DIR_PATH, 40);
+
+				if (gFont == NULL)
+				{
+					cerr << "Font not opened : " << TTF_GetError() << endl;
+					success = false;
+				}
+			}
 		}
 	}
 
@@ -58,6 +76,11 @@ void Close()
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
 
+	// Close font
+	TTF_CloseFont(gFont);
+	gFont = NULL;
+
+	TTF_Quit();
 	SDL_Quit();
 }
 

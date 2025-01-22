@@ -10,6 +10,17 @@ using namespace std;
 constexpr Uint16 SCREEN_WIDTH = 800;
 constexpr Uint16 SCREEN_HEIGHT = 600;
 
+
+
+// RESOURCES SETTINGS ---------------------------------------------------
+
+#define RESOURCES_DIR_PATH "resources/"
+
+//fonts
+#define ARIAL_DIR_PATH "resources/fonts/arial.ttf"
+
+
+
 // GAME SPECIFIC SETTINGS -------------------------------------------
 
 // Divider in the middle of the screen
@@ -26,6 +37,8 @@ static const int PADDLE_WIDTH = 5;
 static const int PADDLE_HEIGHT = 75;
 
 static const int PADDLE_SPEED = 700;
+
+
 
 // KEYBINDS ---------------------------------------------------------
 

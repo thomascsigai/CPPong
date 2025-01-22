@@ -3,3 +3,4 @@ out
 
 # Ignore SDL2 dll file
 SDL2.dll
+/SDL2_ttf.dll
