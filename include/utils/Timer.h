@@ -13,10 +13,10 @@ public:
     void Pause();
     void Unpause();
 
-    Uint32 GetTicks();
+    Uint32 GetTicks() const;
 
-    bool IsStarted();
-    bool IsPaused();
+    bool IsStarted() const;
+    bool IsPaused() const;
 
 private:
     Uint32 startTicks;

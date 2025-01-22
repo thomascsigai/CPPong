@@ -10,9 +10,7 @@ class Ball : public GameObject
 public:
 	Ball();
 
-	void Move() override;
-
-	void Render(SDL_Renderer* renderer) override;
+	void Move(double deltaTime) override;
 
 	void OnCollide(GameObject& other) override;
 };

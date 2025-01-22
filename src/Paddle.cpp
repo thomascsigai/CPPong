@@ -25,26 +25,14 @@ void Paddle::HandleEvent(SDL_Event& e)
 	}
 }
 
-void Paddle::Move()
+void Paddle::Move(double deltaTime)
 {
-	transform.y += velY;
+	transform.y += velY * deltaTime;
 
 	if (transform.y <= 0 || transform.y >= SCREEN_HEIGHT - PADDLE_HEIGHT)
 	{
-		transform.y -= velY;
+		transform.y -= velY * deltaTime;
 	}
 
 	transform.UpdateCollider();
-}
-
-void Paddle::Render(SDL_Renderer* renderer)
-{
-	SDL_Rect paddleRect = { transform.x, transform.y, transform.w, transform.h };
-	SDL_RenderFillRect(renderer, &paddleRect);
-
-	//Debug draw collider
-
-	/*SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-	SDL_RenderDrawRect(renderer, &transform.collider);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);*/
 }

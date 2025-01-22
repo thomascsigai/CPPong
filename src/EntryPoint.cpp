@@ -35,7 +35,7 @@ bool Init()
 		else
 		{
 			// Create Renderer
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
 
 			if (gRenderer == NULL)
 			{
@@ -110,11 +110,9 @@ int main(int argc, char* argv[])
 
 	Ball ball = Ball();
 
-	Timer fpsTimer = Timer();
-	
-	//Start counting frames per second
-	int countedFrames = 0;
-	fpsTimer.Start();
+	Uint64 previousTime = SDL_GetTicks();
+	Uint64 currentTime;
+	double deltaTime;
 
 	while (!quit)
 	{
@@ -128,15 +126,19 @@ int main(int argc, char* argv[])
 			leftPaddle.HandleEvent(e);
 			rightPaddle.HandleEvent(e);
 		}
-		
-		rightPaddle.Move();
-		leftPaddle.Move();
 
-		ball.Move();
+		currentTime = SDL_GetTicks();
+		deltaTime = (double)(currentTime - previousTime) / 1000;
+		previousTime = currentTime;
+		
+		rightPaddle.Move(deltaTime);
+		leftPaddle.Move(deltaTime);
+
+		ball.Move(deltaTime);
 
 		if (CheckCollision(ball.GetCollider(), leftPaddle.GetCollider())) ball.OnCollide(leftPaddle);
 		if (CheckCollision(ball.GetCollider(), rightPaddle.GetCollider())) ball.OnCollide(rightPaddle);
-				
+
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(gRenderer);
 		SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
@@ -149,16 +151,6 @@ int main(int argc, char* argv[])
 		ball.Render(gRenderer);
 
 		SDL_RenderPresent(gRenderer);
-		
-		//Calculate and correct fps
-		/*float avgFPS = countedFrames / (fpsTimer.GetTicks() / 1000.f);
-		if (avgFPS > 2000000)
-		{
-			avgFPS = 0;
-		}
-		cout << "Average FPS : " << avgFPS << endl;*/
-
-		++countedFrames;
 	}
 
 	Close();

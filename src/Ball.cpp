@@ -10,19 +10,7 @@ Ball::Ball()
 	velY = BALL_SPEED;
 }
 
-void Ball::Render(SDL_Renderer* renderer)
-{
-	SDL_Rect ballRect = { transform.x, transform.y, BALL_SIZE, BALL_SIZE };
-	SDL_RenderFillRect(renderer, &ballRect);
-
-	//Debug draw collider
-
-	/*SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-	SDL_RenderDrawRect(renderer, &transform.collider);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);*/
-}
-
-void Ball::Move()
+void Ball::Move(double deltaTime)
 {
 	// Checks for screen up and down collision to rebound
 	if (transform.y >= SCREEN_HEIGHT - BALL_SIZE || transform.y <= BALL_SIZE)
@@ -36,7 +24,7 @@ void Ball::Move()
 		transform.SetPosition(SCREEN_WIDTH / 2 - BALL_SIZE / 2, SCREEN_HEIGHT / 2 - BALL_SIZE / 2);
 	}
 	
-	GameObject::Move();
+	GameObject::Move(deltaTime);
 }
 
 void Ball::OnCollide(GameObject& other)

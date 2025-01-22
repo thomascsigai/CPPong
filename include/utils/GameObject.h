@@ -6,12 +6,12 @@ using namespace std;
 
 struct Transform
 {
-	int x = 0, y = 0;
+	float x = 0, y = 0;
 	int w = 0, h = 0;
 
 	SDL_Rect collider = {};
 
-	void SetPosition(int _x, int _y)
+	void SetPosition(float _x, float _y)
 	{
 		x = _x; y = _y;
 		UpdateCollider();
@@ -23,7 +23,7 @@ struct Transform
 		UpdateCollider();
 	}
 
-	void UpdateCollider() { collider = { x, y, w, h }; }
+	void UpdateCollider() { collider = { (int)x, (int)y, w, h }; }
 };
 
 
@@ -40,13 +40,20 @@ public:
 
 	virtual void Render(SDL_Renderer* renderer)
 	{
-		cerr << "Render method used but not implemented for GameObject " << name << "." << endl;
+		SDL_Rect rect = { transform.x, transform.y, transform.w, transform.h };
+		SDL_RenderFillRect(renderer, &rect);
+
+		//Debug draw collider
+
+		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+		SDL_RenderDrawRect(renderer, &transform.collider);
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	}
 
-	virtual void Move()
+	virtual void Move(double deltaTime)
 	{
-		transform.x += velX;
-		transform.y += velY;
+		transform.x += velX * deltaTime;
+		transform.y += velY * deltaTime;
 
 		transform.UpdateCollider();
 	}
