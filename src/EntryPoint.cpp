@@ -76,10 +76,10 @@ void DrawDividers()
 	}
 }
 
-bool CheckCollision(SDL_Rect a, SDL_Rect b)
+bool CheckCollision(SDL_FRect a, SDL_FRect b)
 {
-	int leftA, rightA, topA, bottomA;
-	int leftB, rightB, topB, bottomB;
+	float leftA, rightA, topA, bottomA;
+	float leftB, rightB, topB, bottomB;
 
 	leftA = a.x;	rightA  = a.x + a.w;
 	topA  = a.y;	bottomA = a.y + a.h;

@@ -7,9 +7,9 @@ using namespace std;
 struct Transform
 {
 	float x = 0, y = 0;
-	int w = 0, h = 0;
+	float w = 0, h = 0;
 
-	SDL_Rect collider = {};
+	SDL_FRect collider = {};
 
 	void SetPosition(float _x, float _y)
 	{
@@ -17,13 +17,13 @@ struct Transform
 		UpdateCollider();
 	}
 
-	void SetSize(int _w, int _h)
+	void SetSize(float _w, float _h)
 	{
 		w = _w; h = _h;
 		UpdateCollider();
 	}
 
-	void UpdateCollider() { collider = { (int)x, (int)y, w, h }; }
+	void UpdateCollider() { collider = { x, y, w, h }; }
 };
 
 
@@ -40,13 +40,13 @@ public:
 
 	virtual void Render(SDL_Renderer* renderer)
 	{
-		SDL_Rect rect = { transform.x, transform.y, transform.w, transform.h };
-		SDL_RenderFillRect(renderer, &rect);
+		SDL_FRect rect = { transform.x, transform.y, transform.w, transform.h };
+		SDL_RenderFillRectF(renderer, &rect);
 
 		//Debug draw collider
 
 		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-		SDL_RenderDrawRect(renderer, &transform.collider);
+		SDL_RenderDrawRectF(renderer, &transform.collider);
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	}
 
@@ -72,7 +72,7 @@ public:
 	// Getters
 	Transform GetTransform() const { return transform; }
 	string GetName() const { return name; }
-	SDL_Rect GetCollider() const { return transform.collider; }
+	SDL_FRect GetCollider() const { return transform.collider; }
 
 	//Setters
 	void SetName(string name) { name = name; }
