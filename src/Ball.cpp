@@ -13,9 +13,17 @@ Ball::Ball()
 void Ball::Move(double deltaTime)
 {
 	// Checks for screen up and down collision to rebound
-	if (transform.y >= SCREEN_HEIGHT - BALL_SIZE || transform.y <= BALL_SIZE)
+	if (transform.y < 0)
 	{
 		velY *= -1;
+		// Set ball position to avoid reinvert
+		transform.SetPosition(transform.x, 1);
+	}
+	if (transform.y > SCREEN_HEIGHT - BALL_SIZE)
+	{
+		velY *= -1;
+		// Set ball position to avoid reinvert
+		transform.SetPosition(transform.x, SCREEN_HEIGHT - BALL_SIZE - 1);
 	}
 
 	// Checks for screen left and right collision (point scored)
