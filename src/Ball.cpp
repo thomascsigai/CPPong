@@ -12,15 +12,13 @@ Ball::Ball()
 
 void Ball::Move(double deltaTime)
 {
-	// Checks for screen up collision to rebound
+	// Checks for screen up and down collision to rebound
 	if (transform.y < 0)
 	{
 		velY *= -1;
 		// Set ball position to avoid reinvert
 		transform.SetPosition(transform.x, 1);
 	}
-
-	// Checks for screen down collision to rebound
 	if (transform.y > SCREEN_HEIGHT - BALL_SIZE)
 	{
 		velY *= -1;
@@ -41,12 +39,6 @@ void Ball::OnCollide(GameObject& other)
 {
 	if (typeid(other) == typeid(Paddle))
 	{
-		                                         // -sign(velX) * (1 + BALL_SIZE)
-		float newPosX = other.GetTransform().x + -(velX / abs(velX)) * (1 + BALL_SIZE);
-		
 		velX *= -1;
-
-		// Teleport ball next to the paddle to avoid unwanted collisions
-		transform.SetPosition(newPosX, transform.y);
 	}
 }

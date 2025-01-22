@@ -19,11 +19,11 @@ constexpr Uint16 SPACE_BETWEEN_DIVIDERS = 10;
 
 // Ball Settings
 constexpr Uint16 BALL_SIZE = 5;
-constexpr Uint16 BALL_SPEED = 500;
+constexpr Uint16 BALL_SPEED = 300;
 
 // Paddle Settings
 static const int PADDLE_WIDTH = 5;
-static const int PADDLE_HEIGHT = 500;
+static const int PADDLE_HEIGHT = 75;
 
 static const int PADDLE_SPEED = 500;
 
