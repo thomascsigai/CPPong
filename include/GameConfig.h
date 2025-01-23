@@ -17,7 +17,7 @@ constexpr Uint16 SCREEN_HEIGHT = 600;
 #define RESOURCES_DIR_PATH "resources/"
 
 //fonts
-#define ARIAL_DIR_PATH "resources/fonts/arial.ttf"
+#define BIT_FONT_DIR_PATH "resources/fonts/bit5x3.ttf"
 
 
 
@@ -37,8 +37,6 @@ static const int PADDLE_WIDTH = 5;
 static const int PADDLE_HEIGHT = 75;
 
 static const int PADDLE_SPEED = 700;
-
-
 
 // KEYBINDS ---------------------------------------------------------
 

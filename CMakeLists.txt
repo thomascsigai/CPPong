@@ -11,7 +11,7 @@ project ("CPPong")
 find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-add_executable (CPPong "src/EntryPoint.cpp" "src/Paddle.cpp" "include/utils/Timer.cpp" "src/Ball.cpp")
+add_executable (CPPong "src/EntryPoint.cpp" "src/Paddle.cpp" "include/utils/Timer.cpp" "src/Ball.cpp" "include/utils/Texture.h" "include/utils/Texture.cpp")
 target_include_directories(CPPong PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/include/utils")
 
 target_link_libraries(CPPong PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_ttf::SDL2_ttf)
