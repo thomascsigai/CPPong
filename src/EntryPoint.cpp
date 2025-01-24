@@ -38,7 +38,7 @@ bool Init()
 	else
 	{
 		// Create Window
-		gWindow = SDL_CreateWindow("GameDev QuickStart", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow("CPPong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 		if (gWindow == NULL)
 		{
@@ -156,6 +156,34 @@ bool LoadMedia()
 	return success;
 }
 
+bool LoadScore()
+{
+	bool success = true;
+
+	if (gFont == NULL)
+	{
+		printf("Failed to load bit font! SDL_ttf Error: %s\n", TTF_GetError());
+		success = false;
+	}
+	else
+	{
+		//Render text
+		SDL_Color textColor = { 255, 255, 255 };
+		if (!gScoreTextureP1.LoadFromRenderedText(to_string(gScoreP1), textColor, gFont, gRenderer))
+		{
+			printf("Failed to render text texture!\n");
+			success = false;
+		}
+		if (!gScoreTextureP2.LoadFromRenderedText(to_string(gScoreP2), textColor, gFont, gRenderer))
+		{
+			printf("Failed to render text texture!\n");
+			success = false;
+		}
+	}
+
+	return success;
+}
+
 int main(int argc, char* argv[])
 {
 	bool quit = false;
@@ -189,9 +217,8 @@ int main(int argc, char* argv[])
 
 			else if (e.type == UserEvents::BALL_OUT)
 			{
-				int ballDir = *static_cast<int*>(e.user.data1) > 0 ? 1 : -1;
-				if (ballDir < 0) cout << "P1 : " << gScoreP1 << " P2 : " << ++gScoreP2 << endl;
-				else cout << "P1 : " << ++gScoreP1 << " P2 : " << gScoreP2 << endl;
+				int ballDir = *static_cast<int*>(e.user.data1) > 0 ? gScoreP1++ : gScoreP2++;
+				LoadScore();
 			}
 
 			leftPaddle.HandleEvent(e);
@@ -221,8 +248,8 @@ int main(int argc, char* argv[])
 
 		ball.Render(gRenderer);
 
-		gScoreTextureP1.Render(0, 50, gRenderer);
-		gScoreTextureP2.Render(0, 50, gRenderer);
+		gScoreTextureP1.Render(SCREEN_WIDTH / 4 - gScoreTextureP1.GetWidth() / 2, 50, gRenderer);
+		gScoreTextureP2.Render(3 * SCREEN_WIDTH / 4 - gScoreTextureP1.GetWidth() / 2, 50, gRenderer);
 
 		SDL_RenderPresent(gRenderer);
 	}
