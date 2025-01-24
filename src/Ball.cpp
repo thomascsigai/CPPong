@@ -31,6 +31,8 @@ void Ball::Move(double deltaTime)
 	// Checks for screen left and right collision (point scored)
 	if (transform.x >= SCREEN_WIDTH - BALL_SIZE || transform.x <= BALL_SIZE)
 	{
+		OnBallOut.user.data1 = &velX;
+		SDL_PushEvent(&OnBallOut);
 		transform.SetPosition(SCREEN_WIDTH / 2 - BALL_SIZE / 2, SCREEN_HEIGHT / 2 - BALL_SIZE / 2);
 	}
 

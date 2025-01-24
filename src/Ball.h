@@ -4,6 +4,7 @@
 #include <GameObject.h>
 #include <Timer.h>
 #include <SDL.h>
+#include <UserEvents.h>
 
 class Ball : public GameObject
 {
@@ -13,4 +14,8 @@ public:
 	void Move(double deltaTime) override;
 
 	void OnCollide(GameObject& other) override;
+
+private:
+	// Events
+	SDL_Event OnBallOut = { UserEvents::BALL_OUT };
 };

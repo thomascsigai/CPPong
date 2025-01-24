@@ -5,15 +5,26 @@
 #include <Paddle.h>
 #include <Ball.h>
 #include <Timer.h>
+#include <Texture.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <string>
+#include <UserEvents.h>
 
 // The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 // The renderer
 SDL_Renderer* gRenderer = NULL;
+
 // Font used in game
 TTF_Font* gFont = NULL;
+// Texture score P1
+Texture gScoreTextureP1;
+// Texture score P2
+Texture gScoreTextureP2;
+
+static Uint16 gScoreP1 = 0;
+static Uint16 gScoreP2 = 0;
 
 bool Init()
 {
@@ -50,16 +61,6 @@ bool Init()
 				cerr << "SDL_ttf could not initialize : " << TTF_GetError() << endl;
 				success = false;
 			}
-			else
-			{
-				gFont = TTF_OpenFont(ARIAL_DIR_PATH, 40);
-
-				if (gFont == NULL)
-				{
-					cerr << "Font not opened : " << TTF_GetError() << endl;
-					success = false;
-				}
-			}
 		}
 	}
 
@@ -68,6 +69,14 @@ bool Init()
 
 void Close()
 {
+	// Free score textures
+	gScoreTextureP1.Free();
+	gScoreTextureP2.Free();
+
+	// Close font
+	TTF_CloseFont(gFont);
+	gFont = NULL;
+
 	// Destroy Renderer
 	SDL_DestroyRenderer(gRenderer);
 	gRenderer = NULL;
@@ -75,10 +84,6 @@ void Close()
 	// Destroy Window
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
-
-	// Close font
-	TTF_CloseFont(gFont);
-	gFont = NULL;
 
 	TTF_Quit();
 	SDL_Quit();
@@ -120,6 +125,37 @@ bool CheckCollision(SDL_FRect a, SDL_FRect b)
 	return true;
 }
 
+bool LoadMedia()
+{
+	//Loading success flag
+	bool success = true;
+
+	//Open the font
+	gFont = TTF_OpenFont(BIT_FONT_DIR_PATH, 75);
+	if (gFont == NULL)
+	{
+		printf("Failed to load bit font! SDL_ttf Error: %s\n", TTF_GetError());
+		success = false;
+	}
+	else
+	{
+		//Render text
+		SDL_Color textColor = { 255, 255, 255 };
+		if (!gScoreTextureP1.LoadFromRenderedText(to_string(gScoreP1), textColor, gFont, gRenderer))
+		{
+			printf("Failed to render text texture!\n");
+			success = false;
+		}
+		if (!gScoreTextureP2.LoadFromRenderedText(to_string(gScoreP2), textColor, gFont, gRenderer))
+		{
+			printf("Failed to render text texture!\n");
+			success = false;
+		}
+	}
+
+	return success;
+}
+
 int main(int argc, char* argv[])
 {
 	bool quit = false;
@@ -137,6 +173,11 @@ int main(int argc, char* argv[])
 	Uint64 currentTime;
 	double deltaTime;
 
+	if (!LoadMedia())
+	{
+		cerr << "Failed to load media !" << endl;
+	}
+
 	while (!quit)
 	{
 		while (SDL_PollEvent(&e) != 0)
@@ -144,6 +185,13 @@ int main(int argc, char* argv[])
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+			}
+
+			else if (e.type == UserEvents::BALL_OUT)
+			{
+				int ballDir = *static_cast<int*>(e.user.data1) > 0 ? 1 : -1;
+				if (ballDir < 0) cout << "P1 : " << gScoreP1 << " P2 : " << ++gScoreP2 << endl;
+				else cout << "P1 : " << ++gScoreP1 << " P2 : " << gScoreP2 << endl;
 			}
 
 			leftPaddle.HandleEvent(e);
@@ -172,6 +220,9 @@ int main(int argc, char* argv[])
 		rightPaddle.Render(gRenderer);
 
 		ball.Render(gRenderer);
+
+		gScoreTextureP1.Render(0, 50, gRenderer);
+		gScoreTextureP2.Render(0, 50, gRenderer);
 
 		SDL_RenderPresent(gRenderer);
 	}
