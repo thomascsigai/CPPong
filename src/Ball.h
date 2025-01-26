@@ -18,4 +18,6 @@ public:
 private:
 	// Events
 	SDL_Event OnBallOut = { UserEvents::BALL_OUT };
+
+	Timer serveTimer;
 };

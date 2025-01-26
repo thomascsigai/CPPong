@@ -32,11 +32,14 @@ constexpr Uint16 SPACE_BETWEEN_DIVIDERS = 10;
 constexpr Uint16 BALL_SIZE = 5;
 constexpr Uint16 BALL_SPEED = 500;
 
+// Time before serving the ball and moving it (in ms)
+constexpr Uint16 BALL_SERVE_TIME = 3000;
+
 // Paddle Settings
 static const int PADDLE_WIDTH = 5;
 static const int PADDLE_HEIGHT = 75;
 
-static const int PADDLE_SPEED = 700;
+static const int PADDLE_SPEED = 750;
 
 // KEYBINDS ---------------------------------------------------------
 

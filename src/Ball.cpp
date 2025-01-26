@@ -8,10 +8,19 @@ Ball::Ball()
 
 	velX = BALL_SPEED;
 	velY = BALL_SPEED;
+
+	serveTimer = Timer();
+	serveTimer.Start();
 }
 
 void Ball::Move(double deltaTime)
 {
+	if (serveTimer.IsStarted())
+	{
+		if (serveTimer.GetTicks() >= BALL_SERVE_TIME) serveTimer.Stop();
+		else return;
+	}
+
 	// Checks for screen up collision to rebound
 	if (transform.y < 0)
 	{
@@ -34,6 +43,8 @@ void Ball::Move(double deltaTime)
 		OnBallOut.user.data1 = &velX;
 		SDL_PushEvent(&OnBallOut);
 		transform.SetPosition(SCREEN_WIDTH / 2 - BALL_SIZE / 2, SCREEN_HEIGHT / 2 - BALL_SIZE / 2);
+
+		serveTimer.Start();
 	}
 
 	GameObject::Move(deltaTime);
