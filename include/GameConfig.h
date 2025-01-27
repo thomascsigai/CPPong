@@ -19,6 +19,9 @@ constexpr Uint16 SCREEN_HEIGHT = 600;
 //fonts
 #define BIT_FONT_DIR_PATH "resources/fonts/bit5x3.ttf"
 
+//Sounds
+#define BALL_TOUCH_SOUND_DIR_PATH "resources/sounds/ballTouch.wav"
+
 
 
 // GAME SPECIFIC SETTINGS -------------------------------------------

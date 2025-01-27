@@ -8,6 +8,7 @@
 #include <Texture.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <string>
 #include <UserEvents.h>
 
@@ -23,6 +24,10 @@ Texture gScoreTextureP1;
 // Texture score P2
 Texture gScoreTextureP2;
 
+// Sounds
+Mix_Chunk* gBallTouchSound = NULL;
+
+// Players scores
 static Uint16 gScoreP1 = 0;
 static Uint16 gScoreP2 = 0;
 
@@ -31,7 +36,7 @@ bool Init()
 	bool success = true;
 
 	// SDL Initialization
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
 		cerr << "SDL could not initialize ! SDL_Error: " << SDL_GetError() << endl;
 	}
@@ -61,6 +66,13 @@ bool Init()
 				cerr << "SDL_ttf could not initialize : " << TTF_GetError() << endl;
 				success = false;
 			}
+
+			//Initialize SDL_mixer
+			if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+			{
+				printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+				success = false;
+			}
 		}
 	}
 
@@ -77,6 +89,9 @@ void Close()
 	TTF_CloseFont(gFont);
 	gFont = NULL;
 
+	Mix_FreeChunk(gBallTouchSound);
+	gBallTouchSound = NULL;
+
 	// Destroy Renderer
 	SDL_DestroyRenderer(gRenderer);
 	gRenderer = NULL;
@@ -85,6 +100,7 @@ void Close()
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
 
+	Mix_Quit();
 	TTF_Quit();
 	SDL_Quit();
 }
@@ -151,6 +167,13 @@ bool LoadMedia()
 			printf("Failed to render text texture!\n");
 			success = false;
 		}
+	}
+
+	gBallTouchSound = Mix_LoadWAV(BALL_TOUCH_SOUND_DIR_PATH);
+	if (gBallTouchSound == NULL)
+	{
+		printf("Failed to load ball touch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+		success = false;
 	}
 
 	return success;
@@ -234,8 +257,16 @@ int main(int argc, char* argv[])
 
 		ball.Move(deltaTime);
 
-		if (CheckCollision(ball.GetCollider(), leftPaddle.GetCollider())) ball.OnCollide(leftPaddle);
-		if (CheckCollision(ball.GetCollider(), rightPaddle.GetCollider())) ball.OnCollide(rightPaddle);
+		if (CheckCollision(ball.GetCollider(), leftPaddle.GetCollider()))
+		{
+			Mix_PlayChannel(-1, gBallTouchSound, 0);
+			ball.OnCollide(leftPaddle);
+		}
+		if (CheckCollision(ball.GetCollider(), rightPaddle.GetCollider()))
+		{
+			Mix_PlayChannel(-1, gBallTouchSound, 0);
+			ball.OnCollide(rightPaddle);
+		}
 
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(gRenderer);
