@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GameConfig.h>
-#include <GameObject.h>
+#include <Djipi.h>
 #include <SDL.h>
 
 enum PaddleType
@@ -10,7 +10,7 @@ enum PaddleType
 	Right
 };
 
-class Paddle : public GameObject
+class Paddle : public Djipi::GameObject
 {
 public:
 	Paddle(PaddleType _type);

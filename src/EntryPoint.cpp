@@ -1,16 +1,18 @@
 // Defines application entry point.
 //
 
+#include <string>
+
+#include <Djipi.h>
 #include <GameConfig.h>
+#include <UserEvents.h>
+
 #include <Paddle.h>
 #include <Ball.h>
-#include <Timer.h>
-#include <Texture.h>
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
-#include <string>
-#include <UserEvents.h>
 
 // The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -20,9 +22,9 @@ SDL_Renderer* gRenderer = NULL;
 // Font used in game
 TTF_Font* gFont = NULL;
 // Texture score P1
-Texture gScoreTextureP1;
+Djipi::Texture gScoreTextureP1;
 // Texture score P2
-Texture gScoreTextureP2;
+Djipi::Texture gScoreTextureP2;
 
 // Sounds
 Mix_Chunk* gBallTouchSound = NULL;

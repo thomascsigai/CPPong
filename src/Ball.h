@@ -1,12 +1,10 @@
 #pragma once
 
-#include <GameConfig.h>
-#include <GameObject.h>
-#include <Timer.h>
+#include <Djipi.h>
 #include <SDL.h>
 #include <UserEvents.h>
 
-class Ball : public GameObject
+class Ball : public Djipi::GameObject
 {
 public:
 	Ball();
@@ -19,5 +17,5 @@ private:
 	// Events
 	SDL_Event OnBallOut = { UserEvents::BALL_OUT };
 
-	Timer serveTimer;
+	Djipi::Timer serveTimer;
 };

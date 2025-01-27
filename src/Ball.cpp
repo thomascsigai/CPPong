@@ -9,7 +9,7 @@ Ball::Ball()
 	velX = BALL_SPEED;
 	velY = BALL_SPEED;
 
-	serveTimer = Timer();
+	serveTimer = Djipi::Timer();
 	serveTimer.Start();
 }
 
