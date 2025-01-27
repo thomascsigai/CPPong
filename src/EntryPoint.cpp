@@ -33,80 +33,6 @@ Mix_Chunk* gBallTouchSound = NULL;
 static Uint16 gScoreP1 = 0;
 static Uint16 gScoreP2 = 0;
 
-bool Init()
-{
-	bool success = true;
-
-	// SDL Initialization
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
-	{
-		cerr << "SDL could not initialize ! SDL_Error: " << SDL_GetError() << endl;
-	}
-	else
-	{
-		// Create Window
-		gWindow = SDL_CreateWindow("CPPong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-
-		if (gWindow == NULL)
-		{
-			cerr << "Window could not be created ! SDL_Error: " << SDL_GetError() << endl;
-			success = false;
-		}
-		else
-		{
-			// Create Renderer
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
-
-			if (gRenderer == NULL)
-			{
-				cerr << "Renderer could not be created ! SDL_Error: " << SDL_GetError() << endl;
-				success = false;
-			}
-
-			if (TTF_Init() < 0)
-			{
-				cerr << "SDL_ttf could not initialize : " << TTF_GetError() << endl;
-				success = false;
-			}
-
-			//Initialize SDL_mixer
-			if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-			{
-				printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-				success = false;
-			}
-		}
-	}
-
-	return success;
-}
-
-void Close()
-{
-	// Free score textures
-	gScoreTextureP1.Free();
-	gScoreTextureP2.Free();
-
-	// Close font
-	TTF_CloseFont(gFont);
-	gFont = NULL;
-
-	Mix_FreeChunk(gBallTouchSound);
-	gBallTouchSound = NULL;
-
-	// Destroy Renderer
-	SDL_DestroyRenderer(gRenderer);
-	gRenderer = NULL;
-
-	// Destroy Window
-	SDL_DestroyWindow(gWindow);
-	gWindow = NULL;
-
-	Mix_Quit();
-	TTF_Quit();
-	SDL_Quit();
-}
-
 // Draws the divider line in the middle of the screen
 void DrawDividers()
 {
@@ -215,7 +141,11 @@ int main(int argc, char* argv[])
 
 	SDL_Event e;
 
-	Init();
+	Djipi::Window appWindow = Djipi::Window();
+	appWindow.Init();
+
+	gWindow = appWindow.GetWindow();
+	gRenderer = appWindow.GetRenderer();
 
 	Paddle leftPaddle = Paddle(PaddleType::Left);
 	Paddle rightPaddle = Paddle(PaddleType::Right);
@@ -287,7 +217,7 @@ int main(int argc, char* argv[])
 		SDL_RenderPresent(gRenderer);
 	}
 
-	Close();
+	appWindow.Close();
 
 	return 0;
 }

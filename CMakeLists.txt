@@ -12,7 +12,7 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
-add_executable (CPPong "src/EntryPoint.cpp" "src/Paddle.cpp" "Djipi/utils/Timer.cpp" "src/Ball.cpp" "Djipi/utils/Texture.h" "Djipi/utils/Texture.cpp" "Djipi/UserEvents.h" "Djipi/Djipi.h")
+add_executable (CPPong "src/EntryPoint.cpp" "src/Paddle.cpp" "Djipi/utils/Timer.cpp" "src/Ball.cpp" "Djipi/utils/Texture.h" "Djipi/utils/Texture.cpp" "Djipi/UserEvents.h" "Djipi/Djipi.h" "Djipi/utils/Window.h" "Djipi/utils/Window.cpp")
 target_include_directories(CPPong PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Djipi" "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/Djipi/utils")
 
 target_link_libraries(CPPong PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)
