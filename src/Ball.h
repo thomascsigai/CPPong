@@ -16,6 +16,7 @@ public:
 private:
 	// Events
 	SDL_Event OnBallOut = { UserEvents::BALL_OUT };
+	SDL_Event OnWallTouch = { UserEvents::WALL_TOUCH };
 
 	Djipi::Timer serveTimer;
 };

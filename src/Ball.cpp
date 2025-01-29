@@ -27,6 +27,7 @@ void Ball::Move(double deltaTime)
 		velY *= -1;
 		// Set ball position to avoid reinvert
 		m_Transform.SetPosition(m_Transform.x, 1);
+		SDL_PushEvent(&OnWallTouch);
 	}
 
 	// Checks for screen down collision to rebound
@@ -35,6 +36,7 @@ void Ball::Move(double deltaTime)
 		velY *= -1;
 		// Set ball position to avoid reinvert
 		m_Transform.SetPosition(m_Transform.x, SCREEN_HEIGHT - BALL_SIZE - 1);
+		SDL_PushEvent(&OnWallTouch);
 	}
 
 	// Checks for screen left and right collision (point scored)

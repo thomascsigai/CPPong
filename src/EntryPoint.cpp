@@ -28,6 +28,7 @@ Djipi::Texture gScoreTextureP2;
 
 // Sounds
 Mix_Chunk* gBallTouchSound = NULL;
+Mix_Chunk* gPointScoreSound = NULL;
 
 // Players scores
 static Uint16 gScoreP1 = 0;
@@ -103,17 +104,24 @@ bool LoadMedia()
 		printf("Failed to load ball touch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
 		success = false;
 	}
+	
+	gPointScoreSound = Mix_LoadWAV(POINT_SCORE_SOUND_DIR_PATH);
+	if (gPointScoreSound == NULL)
+	{
+		printf("Failed to load point score sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+		success = false;
+	}
 
 	return success;
 }
 
-bool LoadScore()
+bool UpdateScore()
 {
 	bool success = true;
 
 	if (gFont == NULL)
 	{
-		printf("Failed to load bit font! SDL_ttf Error: %s\n", TTF_GetError());
+		cerr << "Failed to load bit font! SDL_ttf Error: " << TTF_GetError() << endl;
 		success = false;
 	}
 	else
@@ -122,14 +130,24 @@ bool LoadScore()
 		SDL_Color textColor = { 255, 255, 255 };
 		if (!gScoreTextureP1.LoadFromRenderedText(to_string(gScoreP1), textColor, gFont, gRenderer))
 		{
-			printf("Failed to render text texture!\n");
+			cerr << "Failed to render text texture!" << endl;
 			success = false;
 		}
 		if (!gScoreTextureP2.LoadFromRenderedText(to_string(gScoreP2), textColor, gFont, gRenderer))
 		{
-			printf("Failed to render text texture!\n");
+			cerr << "Failed to render text texture!" << endl;
 			success = false;
 		}
+	}
+
+	if (gPointScoreSound != NULL)
+	{
+		Mix_PlayChannel(-1, gPointScoreSound, 0);
+	}
+	else
+	{
+		cerr << "Failed to play score point sound effect!" << endl;
+		success = false;
 	}
 
 	return success;
@@ -173,7 +191,12 @@ int main(int argc, char* argv[])
 			else if (e.type == UserEvents::BALL_OUT)
 			{
 				int ballDir = *static_cast<int*>(e.user.data1) > 0 ? gScoreP1++ : gScoreP2++;
-				LoadScore();
+				UpdateScore();
+			}
+
+			else if (e.type == UserEvents::WALL_TOUCH)
+			{
+				Mix_PlayChannel(-1, gBallTouchSound, 0);
 			}
 
 			leftPaddle.HandleEvent(e);

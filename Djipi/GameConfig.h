@@ -21,6 +21,7 @@ constexpr Uint16 SCREEN_HEIGHT = 600;
 
 //Sounds
 #define BALL_TOUCH_SOUND_DIR_PATH "resources/sounds/ballTouch.wav"
+#define POINT_SCORE_SOUND_DIR_PATH "resources/sounds/pointScore.wav"
 
 
 
