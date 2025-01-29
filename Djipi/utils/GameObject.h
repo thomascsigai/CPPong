@@ -33,17 +33,18 @@ namespace Djipi
 	class GameObject
 	{
 	protected:
-		string name;
-		Transform transform;
+		string m_Name;
+		Transform m_Transform;
 		int velX = 0, velY = 0;
 
 	public:
 		GameObject() {}
-		GameObject(int x, int y) { transform.x = x; transform.y = y; }
+		GameObject(string name) : m_Name(name) {}
+		GameObject(string name, int x, int y) { m_Transform.x = x; m_Transform.y = y; }
 
 		virtual void Render(SDL_Renderer* renderer)
 		{
-			SDL_FRect rect = { transform.x, transform.y, transform.w, transform.h };
+			SDL_FRect rect = { m_Transform.x, m_Transform.y, m_Transform.w, m_Transform.h };
 			SDL_RenderFillRectF(renderer, &rect);
 
 
@@ -55,29 +56,29 @@ namespace Djipi
 
 		virtual void Move(double deltaTime)
 		{
-			transform.x += velX * deltaTime;
-			transform.y += velY * deltaTime;
+			m_Transform.x += velX * deltaTime;
+			m_Transform.y += velY * deltaTime;
 
-			transform.UpdateCollider();
+			m_Transform.UpdateCollider();
 		}
 
 		virtual void OnCollide(GameObject& other)
 		{
-			cout << name << "Collided with " << other.name << "." << endl;
+			cout << m_Name << "Collided with " << other.m_Name << "." << endl;
 		}
 
 		virtual void HandleEvent(SDL_Event& e)
 		{
-			cerr << "HandleEvent method used but not implemented for GameObject " << name << "." << endl;
+			cerr << "HandleEvent method used but not implemented for GameObject " << m_Name << "." << endl;
 		}
 
 
 		// Getters
-		Transform GetTransform() const { return transform; }
-		string GetName() const { return name; }
-		SDL_FRect GetCollider() const { return transform.collider; }
+		Transform GetTransform() const { return m_Transform; }
+		string GetName() const { return m_Name; }
+		SDL_FRect GetCollider() const { return m_Transform.collider; }
 
 		//Setters
-		void SetName(string name) { name = name; }
+		void SetName(string name) { m_Name = name; }
 	};
 }

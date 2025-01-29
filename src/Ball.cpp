@@ -3,8 +3,8 @@
 
 Ball::Ball()
 {
-	transform.SetPosition(SCREEN_WIDTH / 2 - BALL_SIZE / 2, SCREEN_HEIGHT / 2 - BALL_SIZE / 2);
-	transform.SetSize(BALL_SIZE, BALL_SIZE);
+	m_Transform.SetPosition(SCREEN_WIDTH / 2 - BALL_SIZE / 2, SCREEN_HEIGHT / 2 - BALL_SIZE / 2);
+	m_Transform.SetSize(BALL_SIZE, BALL_SIZE);
 
 	velX = BALL_SPEED;
 	velY = BALL_SPEED;
@@ -22,27 +22,27 @@ void Ball::Move(double deltaTime)
 	}
 
 	// Checks for screen up collision to rebound
-	if (transform.y < 0)
+	if (m_Transform.y < 0)
 	{
 		velY *= -1;
 		// Set ball position to avoid reinvert
-		transform.SetPosition(transform.x, 1);
+		m_Transform.SetPosition(m_Transform.x, 1);
 	}
 
 	// Checks for screen down collision to rebound
-	if (transform.y > SCREEN_HEIGHT - BALL_SIZE)
+	if (m_Transform.y > SCREEN_HEIGHT - BALL_SIZE)
 	{
 		velY *= -1;
 		// Set ball position to avoid reinvert
-		transform.SetPosition(transform.x, SCREEN_HEIGHT - BALL_SIZE - 1);
+		m_Transform.SetPosition(m_Transform.x, SCREEN_HEIGHT - BALL_SIZE - 1);
 	}
 
 	// Checks for screen left and right collision (point scored)
-	if (transform.x >= SCREEN_WIDTH - BALL_SIZE || transform.x <= BALL_SIZE)
+	if (m_Transform.x >= SCREEN_WIDTH - BALL_SIZE || m_Transform.x <= BALL_SIZE)
 	{
 		OnBallOut.user.data1 = &velX;
 		SDL_PushEvent(&OnBallOut);
-		transform.SetPosition(SCREEN_WIDTH / 2 - BALL_SIZE / 2, SCREEN_HEIGHT / 2 - BALL_SIZE / 2);
+		m_Transform.SetPosition(SCREEN_WIDTH / 2 - BALL_SIZE / 2, SCREEN_HEIGHT / 2 - BALL_SIZE / 2);
 
 		serveTimer.Start();
 	}
@@ -60,6 +60,6 @@ void Ball::OnCollide(GameObject& other)
 		velX *= -1;
 
 		// Teleport ball next to the paddle to avoid unwanted collisions
-		transform.SetPosition(newPosX, transform.y);
+		m_Transform.SetPosition(newPosX, m_Transform.y);
 	}
 }
