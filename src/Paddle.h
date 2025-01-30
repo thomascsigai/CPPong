@@ -17,7 +17,7 @@ public:
 
 	void HandleEvent(SDL_Event& e) override;
 
-	void Move(double deltaTime) override;
+	void Update(double deltaTime) override;
 
 private:
 	PaddleType type;

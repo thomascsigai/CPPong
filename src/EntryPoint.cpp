@@ -207,10 +207,10 @@ int main(int argc, char* argv[])
 		deltaTime = (double)(currentTime - previousTime) / 1000;
 		previousTime = currentTime;
 		
-		rightPaddle.Move(deltaTime);
-		leftPaddle.Move(deltaTime);
+		rightPaddle.Update(deltaTime);
+		leftPaddle.Update(deltaTime);
 
-		ball.Move(deltaTime);
+		ball.Update(deltaTime);
 
 		if (CheckCollision(ball.GetCollider(), leftPaddle.GetCollider()))
 		{

@@ -9,7 +9,7 @@ class Ball : public Djipi::GameObject
 public:
 	Ball();
 
-	void Move(double deltaTime) override;
+	void Update(double deltaTime) override;
 
 	void OnCollide(GameObject& other) override;
 

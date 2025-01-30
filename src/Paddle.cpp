@@ -25,7 +25,7 @@ void Paddle::HandleEvent(SDL_Event& e)
 	}
 }
 
-void Paddle::Move(double deltaTime)
+void Paddle::Update(double deltaTime)
 {
 	m_Transform.y += velY * deltaTime;
 

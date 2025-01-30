@@ -13,7 +13,7 @@ Ball::Ball()
 	serveTimer.Start();
 }
 
-void Ball::Move(double deltaTime)
+void Ball::Update(double deltaTime)
 {
 	if (serveTimer.IsStarted())
 	{

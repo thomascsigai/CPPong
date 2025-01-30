@@ -54,6 +54,11 @@ namespace Djipi
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);*/
 		}
 
+		virtual void Update(double deltaTime)
+		{
+			Move(deltaTime);
+		}
+
 		virtual void Move(double deltaTime)
 		{
 			m_Transform.x += velX * deltaTime;
